@@ -19,8 +19,8 @@ You have received a Dockerfile with **critical security vulnerabilities**. Fix t
 1. Clone the repo:
 
    ```bash
-   git clone https://github.com/your-repo/devops-extreme-exam.git
-   cd devops-extreme-exam
+   git clone https://github.com/your-repo/devops-interview-exams.git
+   cd devops-interview-exams
    ```
 
 2. Scan the provided Docker image using **Trivy**:
@@ -91,8 +91,8 @@ An attacker injects a **malicious script** into your GitHub Actions pipeline. Yo
 1. **Clone the repo** and analyze `.github/workflows/pipeline.yml`.
 
    ```bash
-   git clone https://github.com/your-repo/devops-extreme-exam.git
-   cd devops-extreme-exam
+   git clone https://github.com/your-repo/devops-interview-exams.git
+   cd devops-interview-exams
    ```
 
 2. **Find the security issue**:
