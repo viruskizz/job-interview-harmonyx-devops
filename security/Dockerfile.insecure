@@ -1,0 +1,5 @@
+# Insecure Dockerfile Example
+FROM ubuntu:latest
+RUN apt-get update && apt-get install -y curl 
+RUN echo 'root:password' | chpasswd  # Hardcoded password (Security flaw)
+CMD ["/bin/bash"]
