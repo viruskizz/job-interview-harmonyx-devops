@@ -1,0 +1,113 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: pod-failure-experiment
+  namespace: default
+spec:
+  action: pod-failure
+  mode: one
+  # PERFORMANCE ISSUE: Targeting a specific label without selector options
+  selector:
+    namespaces:
+      - default
+    labelSelectors:
+      app: user-management
+  # PERFORMANCE ISSUE: Duration too brief for proper resilience testing
+  duration: "30s"
+  # PERFORMANCE ISSUE: No proper scheduling for predictable testing
+  scheduler:
+    cron: "@every 5m"
+  # PERFORMANCE ISSUE: No proper experiment lifecycle management
+  
+---
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: network-delay-experiment
+  namespace: default
+spec:
+  action: delay
+  mode: all
+  selector:
+    namespaces:
+      - default
+    labelSelectors:
+      app: user-management
+  delay:
+    latency: "200ms"
+    correlation: "0"
+    jitter: "0ms"
+  # PERFORMANCE ISSUE: No duration specified
+  # PERFORMANCE ISSUE: No proper scheduling for predictable testing
+  
+---
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  name: cpu-stress-experiment
+  namespace: default
+spec:
+  mode: one
+  selector:
+    namespaces:
+      - default
+    labelSelectors:
+      app: user-management
+  stressors:
+    cpu:
+      # PERFORMANCE ISSUE: Only 1 worker - not sufficient for modern multi-core
+      workers: 1
+      # PERFORMANCE ISSUE: Low load percentage
+      load: 50
+      # PERFORMANCE ISSUE: No options for stress distribution
+  # PERFORMANCE ISSUE: No duration specified
+  
+---
+# PERFORMANCE ISSUE: Missing other chaos types (disk, memory, etc.)
+  
+---
+# Chaos Dashboard (monitoring component)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chaos-dashboard
+  namespace: chaos-testing
+spec:
+  replicas: 1  # PERFORMANCE ISSUE: No high availability
+  selector:
+    matchLabels:
+      app: chaos-dashboard
+  template:
+    metadata:
+      labels:
+        app: chaos-dashboard
+    spec:
+      # SECURITY ISSUE: No security context
+      containers:
+      - name: chaos-dashboard
+        image: ghcr.io/chaos-mesh/chaos-dashboard:latest  # SECURITY ISSUE: Using latest tag
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 2333
+        # PERFORMANCE ISSUE: No resource limits
+        # SECURITY ISSUE: No proper authentication configuration
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chaos-dashboard
+  namespace: chaos-testing
+spec:
+  selector:
+    app: chaos-dashboard
+  ports:
+  - port: 2333
+    targetPort: 2333
+  # SECURITY ISSUE: Exposing service externally
+  type: LoadBalancer
+  
+---
+# PERFORMANCE ISSUE: No metrics collection for experiment results
+# PERFORMANCE ISSUE: No automated result analysis
+# SECURITY ISSUE: No proper access control for chaos experiments
+# PERFORMANCE ISSUE: No integration with CI/CD pipeline for automated resilience testing

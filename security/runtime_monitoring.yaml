@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: falco-agent
+  namespace: security
+  labels:
+    app: falco-agent
+spec:
+  selector:
+    matchLabels:
+      app: falco-agent
+  template:
+    metadata:
+      labels:
+        app: falco-agent
+    spec:
+      # SECURITY ISSUE: No service account with proper RBAC
+      
+      # SECURITY ISSUE: No proper security context
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: falco
+        image: falcosecurity/falco:latest  # SECURITY ISSUE: Using latest tag
+        
+        # SECURITY ISSUE: Running with excessive privileges
+        securityContext:
+          privileged: true
+        
+        # SECURITY ISSUE: No resource limits
+        
+        volumeMounts:
+        - name: dev-fs
+          mountPath: /host/dev
+        - name: proc-fs
+          mountPath: /host/proc
+          readOnly: true
+        - name: boot-fs
+          mountPath: /host/boot
+          readOnly: true
+        - name: lib-modules
+          mountPath: /host/lib/modules
+          readOnly: true
+        - name: usr-fs
+          mountPath: /host/usr
+          readOnly: true
+        - name: falco-config
+          mountPath: /etc/falco
+      
+      volumes:
+      - name: dev-fs
+        hostPath:
+          path: /dev
+      - name: proc-fs
+        hostPath:
+          path: /proc
+      - name: boot-fs
+        hostPath:
+          path: /boot
+      - name: lib-modules
+        hostPath:
+          path: /lib/modules
+      - name: usr-fs
+        hostPath:
+          path: /usr
+      - name: falco-config
+        configMap:
+          name: falco-config
+          # SECURITY ISSUE: No defaultMode for files
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falco-config
+  namespace: security
+data:
+  falco.yaml: |
+    # SECURITY ISSUE: Incomplete rules configuration
+    
+    # File output configuration
+    file_output:
+      enabled: true
+      keep_alive: false
+      filename: /var/log/falco.log
+    
+    # Standard output configuration
+    stdout_output:
+      enabled: true
+    
+    # SECURITY ISSUE: No proper alert thresholds
+    
+    # SECURITY ISSUE: No integration with central security monitoring
+    
+    # Program output for sending events triggered by Falco
+    program_output:
+      enabled: false  # SECURITY ISSUE: Disabled alert forwarding
+      
+    # SECURITY ISSUE: No proper filtering of events
+    
+    # SECURITY ISSUE: Logging all events can cause performance issues
+    
+    # SECURITY ISSUE: No proper alert prioritization
+    
+  falco_rules.yaml: |
+    # SECURITY ISSUE: Basic rules only
+    - rule: Terminal shell in container
+      desc: A shell was opened in a container
+      condition: container.id != host and proc.name = bash
+      output: Shell opened in container (user=%user.name container=%container.name container_id=%container.id)
+      priority: WARNING
+
+---
+# SECURITY ISSUE: No network policy to protect the security monitoring components
+
+# SECURITY ISSUE: No RBAC configuration for access control
+
+# SECURITY ISSUE: No persistent storage for security logs
+
+# SECURITY ISSUE: No alerting configuration

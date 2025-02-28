@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k6-load-test-config
+data:
+  load_test.js: |
+    // Load test script content would be included here
+    // For brevity, see performance/load_test.js
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: k6-load-test
+spec:
+  # PERFORMANCE ISSUE: Insufficient parallelism for large-scale test
+  parallelism: 3
+  completions: 3
+  template:
+    spec:
+      # SECURITY ISSUE: No security context
+      containers:
+      - name: k6
+        image: loadimpact/k6:latest # SECURITY ISSUE: Using latest tag
+        command: ["k6", "run", "/scripts/load_test.js"]
+        # PERFORMANCE ISSUE: Resource limits too low for effective distributed testing
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+          requests:
+            cpu: "250m"
+            memory: "128Mi"
+        env:
+        - name: TARGET_URL  # SECURITY ISSUE: No secrets management
+          value: "http://app-service"
+        # PERFORMANCE ISSUE: No distributed metrics collection
+        volumeMounts:
+        - name: scripts
+          mountPath: /scripts
+      # SECURITY ISSUE: No node affinity for performance optimization
+      # PERFORMANCE ISSUE: No proper scheduling considerations
+      volumes:
+      - name: scripts
+        configMap:
+          name: k6-load-test-config
+      restartPolicy: Never
+  # PERFORMANCE ISSUE: No backoff limit
+  # PERFORMANCE ISSUE: No TTL settings
+
+---
+# Additional manifest needed for large-scale performance testing:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-collector
+spec:
+  # PERFORMANCE ISSUE: Single replica
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metrics-collector
+  template:
+    metadata:
+      labels:
+        app: metrics-collector
+    spec:
+      # SECURITY ISSUE: No security context
+      containers:
+      - name: prometheus
+        image: prom/prometheus:latest  # SECURITY ISSUE: Latest tag
+        ports:
+        - containerPort: 9090
+        # PERFORMANCE ISSUE: Insufficient resources for metrics collection
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+        # SECURITY ISSUE: No proper volume security
+        volumeMounts:
+        - name: prometheus-config
+          mountPath: /etc/prometheus
+      volumes:
+      - name: prometheus-config
+        configMap:
+          name: prometheus-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-collector
+spec:
+  selector:
+    app: metrics-collector
+  ports:
+  - port: 9090
+    targetPort: 9090
+  # SECURITY ISSUE: Exposing metric service publicly
+  type: LoadBalancer
