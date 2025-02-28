@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: user-management
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: user-management
+  template:
+    metadata:
+      labels:
+        app: user-management
+    spec:
+      # SECURITY ISSUE: No security context
+      containers:
+      - name: app
+        image: user-management:latest  # SECURITY ISSUE: Using latest tag
+        ports:
+        - containerPort: 5000
+        # SECURITY ISSUE: Running as root by default
+        # SECURITY ISSUE: No resource limits
+        env:
+        - name: DB_PASSWORD  # SECURITY ISSUE: Secret as environment variable
+          value: "supersecretpassword"
+        - name: DEBUG
+          value: "True"  # SECURITY ISSUE: Debug enabled in production
+        # SECURITY ISSUE: No liveness/readiness probes
+        # SECURITY ISSUE: No securityContext with proper capabilities
+        volumeMounts:
+        - name: app-data
+          mountPath: /app/data
+          readOnly: false  # SECURITY ISSUE: Writable volume
+      volumes:
+      - name: app-data
+        emptyDir: {}  # SECURITY ISSUE: No persistent storage with proper permissions
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  selector:
+    app: user-management
+  ports:
+  - port: 80
+    targetPort: 5000
+  type: LoadBalancer  # SECURITY ISSUE: Exposing service directly to internet
+---
+# SECURITY ISSUE: No network policies
+# SECURITY ISSUE: No pod security policies
+# SECURITY ISSUE: No RBAC configuration

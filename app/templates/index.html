@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Management</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- SECURITY ISSUE: Using CDN without integrity check -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Management System</h1>
+        
+        <!-- User Registration Form -->
+        <h2>Add New User</h2>
+        <form id="userForm">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <!-- SECURITY ISSUE: No password policy enforcement -->
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit">Add User</button>
+        </form>
+        
+        <!-- Search Form -->
+        <h2>Search Users</h2>
+        <div class="form-group">
+            <label for="search">Search by username:</label>
+            <input type="text" id="search" name="search">
+            <button id="searchBtn">Search</button>
+        </div>
+        
+        <!-- User List -->
+        <h2>User List</h2>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- SECURITY ISSUE: Inline JavaScript -->
+    <script>
+        $(document).ready(function() {
+            // Load users on page load
+            loadUsers();
+            
+            // Form submission
+            $("#userForm").submit(function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                var userData = {
+                    username: $("#username").val(),
+                    password: $("#password").val(),
+                    email: $("#email").val()
+                };
+                
+                // Send POST request
+                $.ajax({
+                    url: "/api/users",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(userData),
+                    success: function(response) {
+                        alert("User created successfully!");
+                        $("#userForm")[0].reset();
+                        loadUsers();
+                    },
+                    error: function(error) {
+                        alert("Error creating user: " + error.responseJSON.error);
+                    }
+                });
+            });
+            
+            // Search button click
+            $("#searchBtn").click(function() {
+                var query = $("#search").val();
+                
+                // SECURITY ISSUE: Not sanitizing user input
+                $.ajax({
+                    url: "/api/search?q=" + query,
+                    type: "GET",
+                    success: function(users) {
+                        displayUsers(users);
+                    },
+                    error: function(error) {
+                        alert("Error searching users");
+                    }
+                });
+            });
+            
+            function loadUsers() {
+                $.ajax({
+                    url: "/api/users",
+                    type: "GET",
+                    success: function(users) {
+                        displayUsers(users);
+                    },
+                    error: function(error) {
+                        alert("Error loading users");
+                    }
+                });
+            }
+            
+            function displayUsers(users) {
+                var tableBody = $("#userTable tbody");
+                tableBody.empty();
+                
+                if (users.length === 0) {
+                    tableBody.append("<tr><td colspan='3'>No users found</td></tr>");
+                    return;
+                }
+                
+                users.forEach(function(user) {
+                    // SECURITY ISSUE: Potential XSS - not escaping user data
+                    var row = "<tr>" +
+                        "<td>" + user.id + "</td>" +
+                        "<td>" + user.username + "</td>" +
+                        "<td>" + user.email + "</td>" +
+                        "</tr>";
+                    tableBody.append(row);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
