@@ -28,7 +28,7 @@ The red team security assessment should:
 ### 2. Infrastructure Security Assessment
 
 - Identify vulnerabilities in Kubernetes configurations
-- Assess container security 
+- Assess container security
 - Evaluate cloud infrastructure vulnerabilities
 - Test network security controls
 - Attempt privilege escalation in the cloud environment
@@ -36,7 +36,7 @@ The red team security assessment should:
 ### 3. CI/CD Pipeline Security Assessment
 
 - Identify vulnerabilities in GitHub Actions workflows
-- Test for supply chain attacks 
+- Test for supply chain attacks
 - Evaluate secrets management
 - Test for pipeline tampering opportunities
 - Assess build server security
@@ -46,26 +46,31 @@ The red team security assessment should:
 The red team assessment should follow a structured methodology:
 
 1. **Reconnaissance**: Gather information about the target environment
+
    - Network mapping
    - Service enumeration
    - Technology identification
 
 2. **Vulnerability Scanning**: Identify potential vulnerabilities
+
    - Use automated tools for initial scanning
    - Perform manual testing to validate findings
    - Document all identified vulnerabilities
 
 3. **Exploitation**: Attempt to exploit identified vulnerabilities
+
    - Develop proof-of-concept exploits
    - Document successful exploitation paths
    - Maintain detailed logs of all activities
 
 4. **Privilege Escalation**: Attempt to gain higher privileges
+
    - Test horizontal privilege escalation
    - Test vertical privilege escalation
    - Attempt to pivot between systems
 
 5. **Persistence**: Establish persistence in the environment
+
    - Create backdoor accounts
    - Implement persistence mechanisms
    - Test detection capabilities
@@ -86,6 +91,7 @@ The red team assessment should follow a structured methodology:
 ## Evaluation Criteria
 
 The red team assessment will be evaluated based on:
+
 - Comprehensiveness of the assessment
 - Technical accuracy of findings
 - Quality of documentation
@@ -96,6 +102,7 @@ The red team assessment will be evaluated based on:
 ## Tools
 
 Candidates may use a variety of security testing tools, including but not limited to:
+
 - OWASP ZAP
 - Burp Suite
 - Metasploit
