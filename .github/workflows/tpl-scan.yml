@@ -1,0 +1,30 @@
+name: security-scan
+
+on:
+  workflow_call:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+
+      - name: Set up Python
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 #v5.5.0
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+            python -m pip install --upgrade pip
+            pip install semgrep
+
+      - name: Run semgrep
+        working-directory: ./app
+        run: |
+            semgrep ci --config auto --json --json-output=semgrep.json
+
+      - name: Run safety
+        uses: pyupio/safety-action@v1
+        with:
+            api-key: ${{ secrets.SAFETY_API_KEY }}

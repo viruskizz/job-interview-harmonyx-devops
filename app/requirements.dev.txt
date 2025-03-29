@@ -1,0 +1,4 @@
+
+## Development environment
+# ✔️ SECURITY ISSUE: Using development libraries in production
+pytest==8.3.5

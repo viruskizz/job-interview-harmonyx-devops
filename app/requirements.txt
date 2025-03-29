@@ -1,11 +1,9 @@
-flask==2.0.1
-# SECURITY ISSUE: Outdated package with known vulnerabilities
-werkzeug==2.0.1
-# SECURITY ISSUE: Pinned to vulnerable version
-Jinja2==2.11.3
-# SECURITY ISSUE: No version pinning
-requests
-# SECURITY ISSUE: Using development libraries in production
-pytest
-# Dependencies for the application
-gunicorn==20.1.0
+flask==3.1.0
+# ✔️ SECURITY ISSUE: Outdated package with known vulnerabilities
+werkzeug==3.1.3
+# ✔️ SECURITY ISSUE: Pinned to vulnerable version
+Jinja2==3.1.6
+# ✔️ SECURITY ISSUE: No version pinning
+requests==2.32.3
+# ✔️ Dependencies for the application
+gunicorn==23.0.0

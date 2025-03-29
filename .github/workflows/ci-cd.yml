@@ -1,0 +1,49 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+      branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  scan:
+    uses: ./.github/workflows/tpl-scan.yml
+    secrets: inherit
+
+  unit-test:
+    uses: ./.github/workflows/tpl-unit-test.yml
+    secrets: inherit
+
+  build:
+    needs: [scan, unit-test]
+    uses: ./.github/workflows/tpl-build.yml
+    secrets: inherit
+
+  publish:
+    needs: [build]
+    uses: ./.github/workflows/tpl-publish.yml
+    secrets: inherit
+
+  dev-approval-gate:
+    needs: publish
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: approved
+        env: 
+          ENV_NAME: Development
+        run: echo "Approve for $($env.ENV_NAME)"
+
+  deploy:
+    needs: [dev-approval-gate]
+    uses: ./.github/workflows/tpl-deploy.yml
+    secrets: inherit
+
+    # SECURITY ISSUE: No DAST scanning post-deployment
+    # SECURITY ISSUE: No compliance validation
