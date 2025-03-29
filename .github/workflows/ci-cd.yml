@@ -83,11 +83,11 @@ jobs:
     - name: Push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: user-management
+        ECR_REPOSITORY: job-interview/harmonyx
       run: |
-        docker tag user-management:${{ github.sha }} $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
+        docker tag  $ECR_REPOSITORY:${{ github.sha }} $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
-        docker tag user-management:${{ github.sha }} $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker tag  $ECR_REPOSITORY:${{ github.sha }} $ECR_REGISTRY/$ECR_REPOSITORY:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
     # SECURITY ISSUE: Pushing latest tag
 
