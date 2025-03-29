@@ -11,8 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      # SECURITY ISSUE: Not pinning action version with SHA
+    - uses: actions/checkout@v2
+      with:
+        ref: ee0669bd1cc54295c223e0bb666b733df41de1c5
+        # SECURITY ISSUE: Not pinning action version with SHA
     
     - name: Set up Python
       uses: actions/setup-python@v2
