@@ -64,7 +64,7 @@ jobs:
     - name: Build Docker image
       working-directory: ./app
       run: |
-        docker build -t user-management:${{ github.sha }} .
+        docker build -t ${{ vars.ECR_REPOSITORY }}:${{ github.sha }} .
 
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722 # v4.1.0
@@ -83,13 +83,9 @@ jobs:
     - name: Push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: job-interview/harmonyx
       run: |
-        docker tag  $ECR_REPOSITORY:${{ github.sha }} $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
-        docker tag  $ECR_REPOSITORY:${{ github.sha }} $ECR_REGISTRY/$ECR_REPOSITORY:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-    # SECURITY ISSUE: Pushing latest tag
+        docker tag  ${{ vars.ECR_REPOSITORY }}:${{ github.sha }} $ECR_REGISTRY/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
+        docker push $ECR_REGISTRY/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
 
   deploy:
     needs: build
