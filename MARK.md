@@ -22,16 +22,13 @@ The exam is scored out of 1000 points, distributed across 8 sections:
 
 ### 1. Secure CI/CD Pipeline Implementation (150 points)
 
-| Mark | Criteria | Description | Reference Materials | Points |
-|:----:|----------|-------------|---------------------|--------|
-| [ ]  | Pipeline Configuration | Properly structured CI/CD pipeline with distinct stages | [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - Review stages structure | 20 |
-| [x]  | Secrets Management | Implementation of secure secrets handling (no hardcoded secrets, proper vault integration) | [pipeline-vulnerabilities.md](01-cicd/pipeline-vulnerabilities.md) - Secrets Management section, [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - secrets handling | 30 |
-|  []  | Security Scanning | Integration of various security scanning tools at appropriate stages | [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - security-scan job, [DEVSECOPS_TOOLS.md](DEVSECOPS_TOOLS.md) - Security Scanning Tools section | 30 |
-|  []  | Supply Chain Security | Measures to prevent dependency confusion, package tampering | [pipeline-vulnerabilities.md](01-cicd/pipeline-vulnerabilities.md) - Supply Chain Vulnerabilities section | 20 |
-|  []  | Image Signing & Verification | Implementation of container image signing and verification | [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - build job | 15 |
-|  []  | Approval Gates | Implementation of proper approval mechanisms for sensitive operations | [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - environment approvals | 15 |
-|  []  | Access Control | Proper permissions and access controls for CI/CD systems | [pipeline-vulnerabilities.md](01-cicd/pipeline-vulnerabilities.md) - Process Issues section | 10 |
-|  []  | Documentation | Clear documentation of pipeline security features and design decisions | [01-cicd/README.md](01-cicd/README.md) | 10 |
+- [ ] Pipeline Configuration - 20
+- [x] Secrets Management - 30
+- [ ] Security Scanning  - 20
+- [ ] Image Signing & Verification - 15
+- [ ] Approval Gates - 15
+- [ ] Access Control - 10
+- [ ] Documentation - 10
 
 ### 2. Infrastructure as Code Security (150 points)
 
