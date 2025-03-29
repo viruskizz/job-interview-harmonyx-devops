@@ -5,8 +5,7 @@ on:
     branches: [ main ]
   pull_request:
       branches: ["main"]
-env:
-  AWS_REGION: 
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -25,13 +24,24 @@ jobs:
     needs: [scan, unit-test]
     uses: ./.github/workflows/tpl-build.yml
     secrets: inherit
+
   publish:
-      needs: [build]
-      uses: ./.github/workflows/tpl-publish.yml
-      secrets: inherit
+    needs: [build]
+    uses: ./.github/workflows/tpl-publish.yml
+    secrets: inherit
+
+  dev-approval-gate:
+    needs: publish
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: approved
+        env: 
+          ENV_NAME: Development
+        run: write-host "Approve for $($env.ENV_NAME)"
 
   deploy:
-    needs: build
+    needs: dev-approval-gate
     runs-on: ubuntu-latest
     # SECURITY ISSUE: No environment-specific deployment
     # SECURITY ISSUE: No approval gate for production deployment
