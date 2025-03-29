@@ -8,6 +8,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 #v2
+
       - name: Build Docker image
         working-directory: ./app
         run: |
