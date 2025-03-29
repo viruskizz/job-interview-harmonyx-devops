@@ -14,9 +14,22 @@ jobs:
           role-to-assume: ${{ secrets.ROLE_ARN }}
           role-session-name: github-oidc
           aws-region: ${{ vars.AWS_REGION }}
-      - name: Sts GetCallerIdentity
+
+      - name: Set up Python
+        uses: actions/setup-python@e9aba2c848f5ebd159c070c61ea2c4e2b122355e #v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
         run: |
-          aws sts get-caller-identity
+          python -m pip install --upgrade pip
+          if [ -f app/requirements.txt ]; then pip install -r app/requirements.txt; fi
+          pip install pytest
+    
+      - name: Build Docker image
+        working-directory: ./app
+        run: |
+          docker build -t ${{ vars.ECR_REPOSITORY }}:${{ github.sha }} .
 
       - name: Login to Amazon ECR
         id: login-ecr
