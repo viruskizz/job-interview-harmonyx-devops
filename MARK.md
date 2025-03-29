@@ -56,15 +56,12 @@ The exam is scored out of 1000 points, distributed across 8 sections:
 
 ### 4. Application Security Automation (125 points)
 
-| Criteria | Description | Reference Materials | Points |
-|----------|-------------|-------------------|--------|
-| Vulnerability Remediation | Fixing identified code vulnerabilities | [vulnerability_examples.md](04-app-security/vulnerability_examples.md) - OWASP Top 10 Vulnerabilities section | 30 |
-| SAST Integration | Integration of Static Application Security Testing | [DEVSECOPS_TOOLS.md](DEVSECOPS_TOOLS.md) - SAST section, [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - CodeQL analysis | 20 |
-| DAST Integration | Integration of Dynamic Application Security Testing | [DEVSECOPS_TOOLS.md](DEVSECOPS_TOOLS.md) - DAST section, [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - ZAP scan | 20 |
-| Dependency Scanning | Implementation of dependency vulnerability scanning | [vulnerability_examples.md](04-app-security/vulnerability_examples.md) - Dependency Management section, [DEVSECOPS_TOOLS.md](DEVSECOPS_TOOLS.md) - Dependency Scanning section | 15 |
-| Security Unit Tests | Creation of security-focused tests | [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - Test section | 15 |
-| Security Policies | Implementation of security policies as code | [vulnerability_examples.md](04-app-security/vulnerability_examples.md) - Content Security Policy section | 15 |
-| Documentation | Clear documentation of security testing approach | [04-app-security/README.md](04-app-security/README.md) | 10 |
+- [ ] Integrate SAST tools in the pipeline
+- [ ] Integrate DAST tools in the pipeline
+- [ ] Configure automated dependency scanning
+- [ ] Implement security unit tests
+- [ ] Create security policy as code
+- [ ] Fix security vulnerabilities in the sample application
 
 ### 5. Incident Response Automation (100 points)
 
