@@ -71,7 +71,7 @@ jobs:
       with:
         role-to-assume: ${{ secrets.ROLE_ARN }}
         role-session-name: github-oidc
-        aws-region: ${{env.AWS_REGION}}
+        aws-region: ${{ vars.AWS_REGION }}
     - name: Sts GetCallerIdentity
       run: |
         aws sts get-caller-identity
