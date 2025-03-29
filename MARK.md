@@ -22,11 +22,11 @@ The exam is scored out of 1000 points, distributed across 8 sections:
 
 ### 1. Secure CI/CD Pipeline Implementation (150 points)
 
-- [ ] Pipeline Configuration - 20
+- [x] Pipeline Configuration - 20
 - [x] Secrets Management - 30
-- [ ] Security Scanning  - 20
+- [x] Security Scanning  - 20
 - [ ] Image Signing & Verification - 15
-- [ ] Approval Gates - 15
+- [x] Approval Gates - 15
 - [ ] Access Control - 10
 - [ ] Documentation - 10
 
