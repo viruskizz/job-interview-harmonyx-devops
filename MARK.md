@@ -24,8 +24,8 @@ The exam is scored out of 1000 points, distributed across 8 sections:
 
 | Mark | Criteria | Description | Reference Materials | Points |
 |:----:|----------|-------------|---------------------|--------|
-|  []  | Pipeline Configuration | Properly structured CI/CD pipeline with distinct stages | [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - Review stages structure | 20 |
-|  []  | Secrets Management | Implementation of secure secrets handling (no hardcoded secrets, proper vault integration) | [pipeline-vulnerabilities.md](01-cicd/pipeline-vulnerabilities.md) - Secrets Management section, [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - secrets handling | 30 |
+| [ ]  | Pipeline Configuration | Properly structured CI/CD pipeline with distinct stages | [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - Review stages structure | 20 |
+| [x]  | Secrets Management | Implementation of secure secrets handling (no hardcoded secrets, proper vault integration) | [pipeline-vulnerabilities.md](01-cicd/pipeline-vulnerabilities.md) - Secrets Management section, [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - secrets handling | 30 |
 |  []  | Security Scanning | Integration of various security scanning tools at appropriate stages | [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - security-scan job, [DEVSECOPS_TOOLS.md](DEVSECOPS_TOOLS.md) - Security Scanning Tools section | 30 |
 |  []  | Supply Chain Security | Measures to prevent dependency confusion, package tampering | [pipeline-vulnerabilities.md](01-cicd/pipeline-vulnerabilities.md) - Supply Chain Vulnerabilities section | 20 |
 |  []  | Image Signing & Verification | Implementation of container image signing and verification | [secure-pipeline-example.yaml](01-cicd/secure-pipeline-example.yaml) - build job | 15 |
