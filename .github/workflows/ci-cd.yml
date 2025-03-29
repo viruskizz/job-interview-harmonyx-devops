@@ -27,16 +27,19 @@ jobs:
         pip install pytest semgrep
     
     - name: Run tests
+      working-directory: ./app
       run: |
-        pytest app/
+        pytest
       # ✔️ SECURITY ISSUE: Not running security tests
     - name: Run semgrep
+      working-directory: ./app
       run: |
-        semgrep ci --config auto --json --json-output=semgrep.json app
+        semgrep ci --config auto --json --json-output=semgrep.json
 
     - name: Build Docker image
+      working-directory: ./app
       run: |
-        docker build -t user-management:${{ github.sha }} app/
+        docker build -t user-management:${{ github.sha }} .
         # SECURITY ISSUE: Not scanning the Docker image for vulnerabilities
     
     # SECURITY ISSUE: No SAST scan
