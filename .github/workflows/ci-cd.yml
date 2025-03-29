@@ -38,34 +38,12 @@ jobs:
       - name: approved
         env: 
           ENV_NAME: Development
-        run: write-host "Approve for $($env.ENV_NAME)"
+        run: echo "Approve for $($env.ENV_NAME)"
 
   deploy:
-    needs: dev-approval-gate
-    runs-on: ubuntu-latest
-    # SECURITY ISSUE: No environment-specific deployment
-    # SECURITY ISSUE: No approval gate for production deployment
-    
-    steps:
-    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 #v2
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ vars.AWS_REGION }}
-    
-    - name: Update kubeconfig
-      run: |
-        aws eks update-kubeconfig --name my-cluster --region ${{ vars.AWS_REGION }}
-    
-    - name: Deploy to Kubernetes
-      run: |
-        # SECURITY ISSUE: No validation of Kubernetes manifests
-        kubectl apply -f infra/deployment.yaml
-        # SECURITY ISSUE: No rollback strategy
-        # SECURITY ISSUE: No verification of deployment health
-    
+    needs: [dev-approval-gate]
+    uses: ./.github/workflows/tpl-deploy.yml
+    secrets: inherit
+
     # SECURITY ISSUE: No DAST scanning post-deployment
     # SECURITY ISSUE: No compliance validation
