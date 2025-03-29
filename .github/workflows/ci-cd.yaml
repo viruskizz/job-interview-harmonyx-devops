@@ -11,14 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ee0669bd1cc54295c223e0bb666b733df41de1c5
-        # SECURITY ISSUE: Not pinning action version with SHA
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 #v2
+      # ✔️ SECURITY ISSUE: Not pinning action version with SHA
     
     - name: Set up Python
-      uses: actions/setup-python@v2
-      # SECURITY ISSUE: Not pinning action version with SHA
+      uses: actions/setup-python@e9aba2c848f5ebd159c070c61ea2c4e2b122355e #v2
+      # ✔️ SECURITY ISSUE: Not pinning action version with SHA
       with:
         python-version: '3.9'
     
@@ -26,13 +24,16 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f app/requirements.txt ]; then pip install -r app/requirements.txt; fi
-        pip install pytest
+        pip install pytest semgrep
     
     - name: Run tests
       run: |
-        # SECURITY ISSUE: Not running security tests
         pytest app/
-    
+      # ✔️ SECURITY ISSUE: Not running security tests
+    - name: Run semgrep
+      run: |
+        semgrep ci --config auto --json --json-output=semgrep.json app
+
     - name: Build Docker image
       run: |
         docker build -t user-management:${{ github.sha }} app/
@@ -72,7 +73,7 @@ jobs:
     # SECURITY ISSUE: No approval gate for production deployment
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 #v2
     
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
