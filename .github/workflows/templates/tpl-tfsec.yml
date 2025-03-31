@@ -1,4 +1,4 @@
-name: security-scan
+name: Template terraform security scan
 
 on:
   workflow_call:

@@ -14,25 +14,25 @@ permissions:
 
 jobs:
   scan:
-    uses: ./.github/workflows/tpl-scan.yml
+    uses: ./.github/workflows/templates/tpl-scan.yml
     secrets: inherit
 
   tfscan:
-    uses: ./.github/workflows/tpl-tfsec.yml
+    uses: ./.github/workflows/templates/tpl-tfsec.yml
     secrets: inherit
 
   unit-test:
-    uses: ./.github/workflows/tpl-unit-test.yml
+    uses: ./.github/workflows/templates/tpl-unit-test.yml
     secrets: inherit
 
   build:
     needs: [scan, unit-test, tfscan]
-    uses: ./.github/workflows/tpl-build.yml
+    uses: ./.github/workflows/templates/tpl-build.yml
     secrets: inherit
 
   publish:
     needs: [build]
-    uses: ./.github/workflows/tpl-publish.yml
+    uses: ./.github/workflows/templates/tpl-publish.yml
     secrets: inherit
 
   dev-approval-gate:
@@ -47,7 +47,7 @@ jobs:
 
   deploy:
     needs: [dev-approval-gate]
-    uses: ./.github/workflows/tpl-deploy.yml
+    uses: ./.github/workflows/templates/tpl-deploy.yml
     secrets: inherit
 
     # SECURITY ISSUE: No DAST scanning post-deployment
