@@ -16,6 +16,10 @@ jobs:
     uses: ./.github/workflows/tpl-scan.yml
     secrets: inherit
 
+  tfscan:
+    uses: ./.github/workflows/tpl-ftsec.yml
+    secrets: inherit
+
   unit-test:
     uses: ./.github/workflows/tpl-unit-test.yml
     secrets: inherit
