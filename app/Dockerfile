@@ -37,7 +37,6 @@ ENV DB_PASSWORD=$DB_PASSWORD
 ENV DEBUG=$DEBUG
 ENV PORT=$PORT
 
-# Use non-root user
 USER appuser
 
 # Health check
@@ -45,10 +44,10 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:${PORT}/health || exit 1
 
 # Container metadata
-# LABEL org.opencontainers.image.source="https://github.com/organization/repository" \
-#       org.opencontainers.image.description="Secure application container" \
-#       org.opencontainers.image.licenses="MIT" \
-#       maintainer="security@example.com"
+LABEL org.opencontainers.image.source="https://github.com/viruskizz/job-interview-harmonyx-devops" \
+      org.opencontainers.image.description="Secure application container" \
+      org.opencontainers.image.licenses="MIT" \
+      maintainer="kizzaraiva@gmail.com"
 
 # Run application with explicit port
 EXPOSE $PORT
