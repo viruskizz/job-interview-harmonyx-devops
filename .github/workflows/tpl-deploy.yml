@@ -1,4 +1,4 @@
-name: Template for unit-test
+name: Template for deploy
 
 on:
   # This is a reusable workflow
