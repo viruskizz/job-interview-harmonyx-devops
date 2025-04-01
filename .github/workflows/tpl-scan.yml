@@ -1,4 +1,4 @@
-name: security-scan
+name: Template semgrep scan
 
 on:
   workflow_call:

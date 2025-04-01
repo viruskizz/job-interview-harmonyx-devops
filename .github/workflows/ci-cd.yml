@@ -10,10 +10,15 @@ on:
 permissions:
   id-token: write
   contents: read
+  pull-requests: write
 
 jobs:
   scan:
     uses: ./.github/workflows/tpl-scan.yml
+    secrets: inherit
+
+  tfscan:
+    uses: ./.github/workflows/tpl-tfsec.yml
     secrets: inherit
 
   unit-test:
@@ -21,7 +26,7 @@ jobs:
     secrets: inherit
 
   build:
-    needs: [scan, unit-test]
+    needs: [scan, unit-test, tfscan]
     uses: ./.github/workflows/tpl-build.yml
     secrets: inherit
 

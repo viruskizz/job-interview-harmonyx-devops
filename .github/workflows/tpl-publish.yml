@@ -1,4 +1,4 @@
-name: unit-test
+name: template publish container to ecr
 
 on:
   # This is a reusable workflow
